@@ -2,13 +2,17 @@
 #define ledPin2 4  //Green
 #define ledPin3 5 //Yellow or Blue
 #define buzzerPin 6 //BuzzerPin
-#define sensorPin A0
-#define thresholdValue 600
+#define mqsensorPin A0 //Analog pin for MQ sensor
+#define thresholdValue 600 //Setting the min threshold value for MQ sensor
 #define calibrationTime 10000 //Give the value in milliseconds Eg: 1 sec:
+// #define flamesensorPin A0 //Analog pin for flame sensor
+#define flamePin 8 //Digital pin for flame sensor
+int flame = HIGH; //Initially setting flame value as HIGH
 
 void setup()
 {
-  pinMode(sensorPin, INPUT);
+  pinMode(mqsensorPin, INPUT);
+  pinMode(flamePin, INPUT);
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
   pinMode(ledPin3, OUTPUT);
@@ -23,11 +27,15 @@ void setup()
 
 void loop()
 {
-  int analogValue = analogRead(sensorPin); // reads digital value
-  if (analogValue > thresholdValue)
+  int mqSensorValue = analogRead(mqsensorPin); // Reads analog value of MQ sensor
+  // int flameSensorValue = analogRead(flamesensorPin); //Reads analog value of flame sensor
+  flame = digitalRead(flamePin); //Reads the digital value of  flame sensor
+  if (mqSensorValue > thresholdValue || flame == LOW)
   {
-    Serial.print("Value: ");
-    Serial.println(analogValue); //Prints analog value
+    Serial.print("Value of MQ Sensor: ");
+    Serial.println(mqSensorValue); //Prints analog value of MQ sensor
+    Serial.print("Value of Flame Sensor: ");
+    Serial.println(flame); //Prints digital value of MQ sensor
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, LOW);
     tone(buzzerPin, 1); //Set the voltage to high and makes a noise
@@ -37,8 +45,10 @@ void loop()
   }
   else
   {
-    Serial.print("Value: ");
-    Serial.println(analogValue); //Prints analog value
+    Serial.print("Value of MQ Sensor: ");
+    Serial.println(mqSensorValue); //Prints analog value
+    Serial.print("Value of Flame Sensor: ");
+    Serial.println(flame); //Prints digital value of MQ sensor
     digitalWrite(ledPin1, LOW);
     digitalWrite(ledPin2, HIGH);
     noTone(buzzerPin); //Sets the voltage to low and makes no noise
