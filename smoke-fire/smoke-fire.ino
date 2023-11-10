@@ -1,5 +1,5 @@
-#define ledPin1 3 //Green
-#define ledPin2 4  //Red
+#define ledPin1 3 //Red
+#define ledPin2 4  //Green
 #define ledPin3 5 //Yellow or Blue
 #define buzzerPin 6 //BuzzerPin
 #define sensorPin A0
